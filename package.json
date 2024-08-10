@@ -11,5 +11,11 @@
     "url": "git@github.hadikrkc:hadikrkc/nodejs.git"
   },
   "author": "hadikrkc",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0",
+    "sequelize": "^6.37.3"
+  }
 }
