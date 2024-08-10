@@ -24,7 +24,7 @@ const router = express.Router();
  *       example:
  *         book_id: 1
  *         name: "The Great Gatsby"
- *         score: "5.5"
+ *         score: 5.5
  */
 
 /**
