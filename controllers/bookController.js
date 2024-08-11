@@ -1,4 +1,5 @@
 const bookService = require('../services/bookService');
+const BookDTO = require('../dtos/bookDTO');
 
 exports.createBook = async (req, res, next) => {
     try {
@@ -27,7 +28,9 @@ exports.getAllBooks = async (req, res, next) => {
         if (!allBooks) {
             return next();
         }
-        res.json(allBooks);
+        
+        const bookDTOs = allBooks.map(book => new BookDTO(book));
+        res.json(bookDTOs);
     } catch (error) {
         next(error);
     }
