@@ -12,6 +12,10 @@ class BookService {
     async getAllBooks() {
         return await bookRepository.findAllBooks();
     }
+
+    async updateBook(book, data) {
+        return await bookRepository.updateBook(book, data);
+    }
     
 }
 

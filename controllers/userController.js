@@ -82,12 +82,20 @@ exports.returnBook = async (req, res, next) => {
             return res.status(404).json({ message: 'Borrowed book not found or already returned.' });
         }
 
-        const updateData = {
+        const updateBorrowedBookData = {
             ...req.body,
             return_date: new Date(),
         };
         
-        const updateBorrowedBook = await borrowedBookService.updateBorrowedBook(borrowedBook, updateData);
+        const updateBorrowedBook = await borrowedBookService.updateBorrowedBook(borrowedBook, updateBorrowedBookData);
+
+        const updateBookData = {
+            total_score: book.total_score + req.body.score,
+            rating_count: book.rating_count + 1
+        };
+
+        const updateBook = await bookService.updateBook(book, updateBookData);
+
         res.status(204).json();
     } catch (error) {
         next(error);

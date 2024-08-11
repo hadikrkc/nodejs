@@ -11,12 +11,13 @@ const Book = sequelize.define('book', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    score: {
+    total_score: {
         type: DataTypes.FLOAT,
-        validate: {
-            min: 0,
-            max: 10,
-        },
+        defaultValue: 0,
+    },
+    rating_count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
     },
 }, {
     timestamps: false,

@@ -1,8 +1,13 @@
 class BookDetailsDTO {
-    constructor({ id, name, score }) {
+    constructor({ id, name, total_score, rating_count}) {
         this.id = id;
         this.name = name;
-        this.score = score !== null ? score.toFixed(2).toString() : -1;
+        if (rating_count > 0) {
+            const averageScore = total_score / rating_count;
+            this.score = averageScore.toFixed(2).toString();
+        } else {
+            this.score = -1;
+        }
     }
 }
 

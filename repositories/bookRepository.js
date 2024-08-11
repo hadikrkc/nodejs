@@ -12,6 +12,10 @@ class BookRepository {
     async findAllBooks() {
         return await Book.findAll();
     }
+
+    async updateBook(book, data) {
+        return await book.update(data);
+    }
 }
 
 module.exports = new BookRepository();
