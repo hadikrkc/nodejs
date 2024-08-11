@@ -23,6 +23,14 @@ class BorrowedBookService {
         return await borrowedBookRepository.updateBorrowedBook(borrowedBook, data);
     }
 
+    async getPastBooksForUser(userId) {
+        return await borrowedBookRepository.getPastBooksForUser(userId);
+    }
+
+    async getPresentBooksForUser(userId) {
+        return await borrowedBookRepository.getPresentBooksForUser(userId);
+    }
+
 }
 
 module.exports = new BorrowedBookService();

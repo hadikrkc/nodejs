@@ -2,6 +2,7 @@ const userService = require('../services/userService');
 const bookService = require('../services/bookService');
 const borrowedBookService = require('../services/borrowedBookService');
 const UserDTO = require('../dtos/UserDTO');
+const UserDetailsDTO = require('../dtos/userDetailsDTO');
 
 exports.createUser = async (req, res, next) => {
     try {
@@ -18,7 +19,13 @@ exports.getUserById = async (req, res, next) => {
         if (!user) {
             return next();
         }
-        res.json(user);
+
+        const pastBooks = await borrowedBookService.getPastBooksForUser(req.params.id);
+        const presentBooks = await borrowedBookService.getPresentBooksForUser(req.params.id);
+
+        const userDetailsDTO = new UserDetailsDTO(user, pastBooks, presentBooks);
+
+        res.json(userDetailsDTO);
     } catch (error) {
         next(error);
     }

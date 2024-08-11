@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const BorrowedBook = require('../models/BorrowedBook');
+const Book = require('../models/Book');
 
 class BorrowedBookRepository {
     async createBorrowedBook(data) {
@@ -28,6 +29,30 @@ class BorrowedBookRepository {
     
     async updateBorrowedBook(borrowedBook, data) {
         return await borrowedBook.update(data);
+    }
+
+    async getPastBooksForUser(userId) {
+        return await BorrowedBook.findAll({
+            where: { user_id: userId, return_date: { [Op.ne]: null }},
+            include: [
+                {
+                    model: Book,
+                    attributes: ['name'],
+                }
+            ] 
+        });
+    }
+
+    async getPresentBooksForUser(userId) {
+        return await BorrowedBook.findAll({
+            where: { user_id : userId, return_date: null },
+            include: [
+                {
+                    model: Book,
+                    attributes: ['name'],
+                }
+            ]
+        });
     }
 }
 

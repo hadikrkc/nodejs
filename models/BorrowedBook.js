@@ -41,4 +41,7 @@ const BorrowedBook = sequelize.define('borrowed_books', {
     timestamps: false,
 });
 
+BorrowedBook.belongsTo(Book, { foreignKey: 'book_id' });
+BorrowedBook.belongsTo(User, { foreignKey: 'user_id' });
+
 module.exports = BorrowedBook;
