@@ -3,7 +3,7 @@ const bookService = require('../services/bookService');
 exports.createBook = async (req, res, next) => {
     try {
         const book = await bookService.createBook(req.body);
-        res.status(201).json(book);
+        res.status(201).json();
     } catch (error) {
         next(error);
     }
