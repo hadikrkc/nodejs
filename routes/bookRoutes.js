@@ -13,7 +13,7 @@ const router = express.Router();
  *       required:
  *         - name
  *       properties:
- *         book_id:
+ *         id:
  *           type: integer
  *           description: Auto-generated ID of the book
  *         name:
@@ -23,9 +23,25 @@ const router = express.Router();
  *           type: float
  *           description: Score of the book
  *       example:
- *         book_id: 1
+ *         id: 1
  *         name: "The Great Gatsby"
  *         score: 5.5
+ *     BookList:
+ *       type: array
+ *       items:
+ *         type: object
+ *         properties:
+ *           id:
+ *             type: integer
+ *             description: Auto-generated ID of the book
+ *           name:
+ *             type: string
+ *             description: Title of the book
+ *       example:
+ *         - id: 10
+ *           name: "Lord of The Ring"
+ *         - id: 11
+ *           name: "Hobbit"
  */
 
 /**
@@ -46,16 +62,34 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the book
+ *                 example: Lord of the Ring
  *     responses:
  *       201:
  *         description: Book created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Book'
  *       400:
  *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: "Name is required"
  */
 router.post('/', validateCreateBook, bookController.createBook);
 
@@ -81,6 +115,20 @@ router.post('/', validateCreateBook, bookController.createBook);
  *               $ref: '#/components/schemas/Book'
  *       404:
  *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "Book not found."
  */
 router.get('/:id', validateGetBookById, bookController.getBookById);
 
