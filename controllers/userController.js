@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 exports.createUser = async (req, res, next) => {
     try {
         const user = await userService.createUser(req.body);
-        res.status(201).json(user);
+        res.status(201).json();
     } catch (error) {
         next(error);
     }
