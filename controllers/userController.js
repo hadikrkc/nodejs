@@ -55,12 +55,22 @@ exports.borrowBook = async (req, res, next) => {
         if (!book) {
             return next(new AppError('Book not found.', 404));
         }
+        if (book.is_borrowed){
+            return next(new AppError('Book has been borrowed.', 404));
+        }
         const borrowedBook = await borrowedBookService.createBorrowedBook(
             {
                 user_id: req.params.id,
                 book_id:req.params.bookId,
                 borrow_date:new Date()
             });
+
+        const updateBookData = {
+            is_borrowed: true
+        };
+
+        const updateBook = await bookService.updateBook(book, updateBookData);
+
         res.status(204).json();
     } catch (error) {
         next(error);
@@ -92,7 +102,8 @@ exports.returnBook = async (req, res, next) => {
 
         const updateBookData = {
             total_score: book.total_score + req.body.score,
-            rating_count: book.rating_count + 1
+            rating_count: book.rating_count + 1,
+            is_borrowed: false
         };
 
         const updateBook = await bookService.updateBook(book, updateBookData);

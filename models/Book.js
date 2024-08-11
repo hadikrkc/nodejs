@@ -19,6 +19,10 @@ const Book = sequelize.define('book', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
+    is_borrowed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 }, {
     timestamps: false,
 });
