@@ -103,4 +103,7 @@ router.get('/:id', userController.getUserById);
  */
 router.get('/', userController.getAllUsers);
 
+router.post('/:id/borrow/:bookId', userController.borrowBook);
+router.post('/:id/return/:bookId', userController.returnBook);
+
 module.exports = router;
