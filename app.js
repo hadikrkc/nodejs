@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const routes = require('./routes');
+const errorHandler = require('./middlewares/errorHandler');
+const AppError = require('./utils/AppError');
 const sequelize = require('./config/database');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
@@ -14,6 +16,12 @@ app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/', routes);
+
+app.use((req, res, next) => {
+    next(new AppError('Resource not found', 404));
+});
+
+app.use(errorHandler);
 
 sequelize.sync().then(() => {
     app.listen(PORT, () => {

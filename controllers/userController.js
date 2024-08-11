@@ -3,6 +3,7 @@ const bookService = require('../services/bookService');
 const borrowedBookService = require('../services/borrowedBookService');
 const UserDTO = require('../dtos/UserDTO');
 const UserDetailsDTO = require('../dtos/userDetailsDTO');
+const AppError = require('../utils/AppError');
 
 exports.createUser = async (req, res, next) => {
     try {
@@ -17,7 +18,7 @@ exports.getUserById = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (!user) {
-            return next();
+            return next(new AppError('User not found.', 404));
         }
 
         const pastBooks = await borrowedBookService.getPastBooksForUser(req.params.id);
@@ -34,8 +35,8 @@ exports.getUserById = async (req, res, next) => {
 exports.getAllUsers = async (req, res, next) => {
     try {
         const allUsers = await userService.getAllUsers();
-        if (!allUsers) {
-            return next();
+        if (!allUsers || allUsers.length === 0) {
+            return res.json([]);
         }
         const userDTOs = allUsers.map(user => new UserDTO(user));
         res.json(userDTOs);
@@ -48,11 +49,11 @@ exports.borrowBook = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (!user) {
-            return next();
+            return next(new AppError('User not found.', 404));
         }
         const book = await bookService.getBookById(req.params.bookId);
         if (!book) {
-            return next();
+            return next(new AppError('Book not found.', 404));
         }
         const borrowedBook = await borrowedBookService.createBorrowedBook(
             {
@@ -70,16 +71,16 @@ exports.returnBook = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (!user) {
-            return next();
+            return next(new AppError('User not found.', 404));
         }
         const book = await bookService.getBookById(req.params.bookId);
         if (!book) {
-            return next();
+            return next(new AppError('Book not found.', 404));
         }
 
         const borrowedBook = await borrowedBookService.findBorrowedBookByUserIdAndBookId(req.params.id,req.params.bookId);
         if (!borrowedBook) {
-            return res.status(404).json({ message: 'Borrowed book not found or already returned.' });
+            return next(new AppError('Borrowed book not found or already returned.', 404));
         }
 
         const updateBorrowedBookData = {
