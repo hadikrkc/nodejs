@@ -1,5 +1,6 @@
 const express = require('express');
 const bookController = require('../controllers/bookController');
+const { validateCreateBook, validateGetBookById } = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
@@ -56,7 +57,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/', bookController.createBook);
+router.post('/', validateCreateBook, bookController.createBook);
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ router.post('/', bookController.createBook);
  *       404:
  *         description: Book not found
  */
-router.get('/:id', bookController.getBookById);
+router.get('/:id', validateGetBookById, bookController.getBookById);
 
 /**
  * @swagger

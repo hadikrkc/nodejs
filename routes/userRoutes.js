@@ -1,8 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/userController');
-
+const { validateCreateUser, validateGetUserById, validateBorrowBook, validateReturnBook} = require('../middlewares/validationMiddleware');
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -58,7 +57,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/', userController.createUser);
+router.post('/', validateCreateUser, userController.createUser);
 
 /**
  * @swagger
@@ -83,7 +82,7 @@ router.post('/', userController.createUser);
  *       404:
  *         description: User not found
  */
-router.get('/:id', userController.getUserById);
+router.get('/:id', validateGetUserById, userController.getUserById);
 
 /**
  * @swagger
@@ -103,7 +102,7 @@ router.get('/:id', userController.getUserById);
  */
 router.get('/', userController.getAllUsers);
 
-router.post('/:id/borrow/:bookId', userController.borrowBook);
-router.post('/:id/return/:bookId', userController.returnBook);
+router.post('/:id/borrow/:bookId', validateBorrowBook, userController.borrowBook);
+router.post('/:id/return/:bookId', validateReturnBook, userController.returnBook);
 
 module.exports = router;
