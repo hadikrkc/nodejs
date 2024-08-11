@@ -1,6 +1,7 @@
 const userService = require('../services/userService');
 const bookService = require('../services/bookService');
 const borrowedBookService = require('../services/borrowedBookService');
+const UserDTO = require('../dtos/UserDTO');
 
 exports.createUser = async (req, res, next) => {
     try {
@@ -29,7 +30,8 @@ exports.getAllUsers = async (req, res, next) => {
         if (!allUsers) {
             return next();
         }
-        res.json(allUsers);
+        const userDTOs = allUsers.map(user => new UserDTO(user));
+        res.json(userDTOs);
     } catch (error) {
         next(error);
     }
