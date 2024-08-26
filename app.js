@@ -4,7 +4,8 @@ const dotenv = require('dotenv').config();
 const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const AppError = require('./utils/AppError');
-const sequelize = require('./config/database');
+const database = require('./config/database');
+const sequelize = database.getSequelizeInstance();
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 
